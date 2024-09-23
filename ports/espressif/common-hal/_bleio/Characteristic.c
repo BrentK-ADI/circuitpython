@@ -22,32 +22,6 @@
 
 static int characteristic_on_ble_gap_evt(struct ble_gap_event *event, void *param);
 
-static volatile int _completion_status;
-static uint64_t _timeout_start_time;
-
-static void _reset_completion_status(void) {
-    _completion_status = 0;
-}
-
-// Wait for a status change, recorded in a callback.
-// Try twice because sometimes we get a BLE_HS_EAGAIN.
-// Maybe we should try more than twice.
-static int _wait_for_completion(uint32_t timeout_msecs) {
-    for (int tries = 1; tries <= 2; tries++) {
-        _timeout_start_time = common_hal_time_monotonic_ms();
-        while ((_completion_status == 0) &&
-               (common_hal_time_monotonic_ms() < _timeout_start_time + timeout_msecs) &&
-               !mp_hal_is_interrupted()) {
-            RUN_BACKGROUND_TASKS;
-        }
-        if (_completion_status != BLE_HS_EAGAIN) {
-            // Quit, because either the status is either zero (OK) or it's an error.
-            break;
-        }
-    }
-    return _completion_status;
-}
-
 void common_hal_bleio_characteristic_construct(bleio_characteristic_obj_t *self, bleio_service_obj_t *service,
     uint16_t handle, bleio_uuid_obj_t *uuid, bleio_characteristic_properties_t props,
     bleio_attribute_security_mode_t read_perm, bleio_attribute_security_mode_t write_perm,
@@ -151,35 +125,7 @@ bleio_service_obj_t *common_hal_bleio_characteristic_get_service(bleio_character
     return self->service;
 }
 
-typedef struct {
-    uint8_t *buf;
-    uint16_t len;
-} _read_info_t;
 
-static int _read_cb(uint16_t conn_handle,
-    const struct ble_gatt_error *error,
-    struct ble_gatt_attr *attr,
-    void *arg) {
-    _read_info_t *read_info = (_read_info_t *)arg;
-    switch (error->status) {
-        case 0: {
-            int len = MIN(read_info->len, OS_MBUF_PKTLEN(attr->om));
-            os_mbuf_copydata(attr->om, attr->offset, len, read_info->buf);
-            read_info->len = len;
-        }
-            MP_FALLTHROUGH;
-
-        default:
-            #if CIRCUITPY_VERBOSE_BLE
-            // For debugging.
-            mp_printf(&mp_plat_print, "Read status: %d\n", error->status);
-            #endif
-            break;
-    }
-    _completion_status = error->status;
-
-    return 0;
-}
 
 size_t common_hal_bleio_characteristic_get_value(bleio_characteristic_obj_t *self, uint8_t *buf, size_t len) {
     // Do GATT operations only if this characteristic has been added to a registered service.
@@ -188,14 +134,7 @@ size_t common_hal_bleio_characteristic_get_value(bleio_characteristic_obj_t *sel
     }
     uint16_t conn_handle = bleio_connection_get_conn_handle(self->service->connection);
     if (common_hal_bleio_service_get_is_remote(self->service)) {
-        _read_info_t read_info = {
-            .buf = buf,
-            .len = len
-        };
-        _reset_completion_status();
-        CHECK_NIMBLE_ERROR(ble_gattc_read(conn_handle, self->handle, _read_cb, &read_info));
-        CHECK_NIMBLE_ERROR(_wait_for_completion(2000));
-        return read_info.len;
+        return bleio_gattc_read(conn_handle, self->handle, buf, len);
     } else {
         len = MIN(self->current_value_len, len);
         memcpy(buf, self->current_value, len);
@@ -209,24 +148,13 @@ size_t common_hal_bleio_characteristic_get_max_length(bleio_characteristic_obj_t
     return self->max_length;
 }
 
-static int _write_cb(uint16_t conn_handle,
-    const struct ble_gatt_error *error,
-    struct ble_gatt_attr *attr,
-    void *arg) {
-    _completion_status = error->status;
-
-    return 0;
-}
-
 void common_hal_bleio_characteristic_set_value(bleio_characteristic_obj_t *self, mp_buffer_info_t *bufinfo) {
     if (common_hal_bleio_service_get_is_remote(self->service)) {
         uint16_t conn_handle = bleio_connection_get_conn_handle(self->service->connection);
         if ((self->props & CHAR_PROP_WRITE_NO_RESPONSE) != 0) {
             CHECK_NIMBLE_ERROR(ble_gattc_write_no_rsp_flat(conn_handle, self->handle, bufinfo->buf, bufinfo->len));
         } else {
-            _reset_completion_status();
-            CHECK_NIMBLE_ERROR(ble_gattc_write_flat(conn_handle, self->handle, bufinfo->buf, bufinfo->len, _write_cb, NULL));
-            CHECK_NIMBLE_ERROR(_wait_for_completion(2000));
+            bleio_gattc_write(conn_handle, self->handle, bufinfo->buf, bufinfo->len);
         }
     } else {
         // Validate data length for local characteristics only.
@@ -394,9 +322,7 @@ void common_hal_bleio_characteristic_set_cccd(bleio_characteristic_obj_t *self, 
         (notify ? 1 << 0 : 0) |
         (indicate ? 1 << 1: 0);
 
-    _reset_completion_status();
-    CHECK_NIMBLE_ERROR(ble_gattc_write_flat(conn_handle, self->cccd_handle, &cccd_value, 2, _write_cb, NULL));
-    CHECK_NIMBLE_ERROR(_wait_for_completion(2000));
+    bleio_gattc_write(conn_handle, self->cccd_handle, (uint8_t *)&cccd_value, 2);
 }
 
 void bleio_characteristic_set_observer(bleio_characteristic_obj_t *self, mp_obj_t observer) {

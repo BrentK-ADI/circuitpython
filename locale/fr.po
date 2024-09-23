@@ -1235,10 +1235,12 @@ msgstr ""
 #: ports/raspberrypi/common-hal/picodvi/Framebuffer_RP2040.c py/argcheck.c
 #: shared-bindings/digitalio/DigitalInOut.c
 #: shared-bindings/epaperdisplay/EPaperDisplay.c shared-bindings/pwmio/PWMOut.c
+#: shared-module/aurora_epaper/aurora_framebuffer.c
 msgid "Invalid %q"
 msgstr "%q invalide"
 
 #: ports/raspberrypi/common-hal/picodvi/Framebuffer_RP2350.c
+#: shared-module/aurora_epaper/aurora_framebuffer.c
 msgid "Invalid %q and %q"
 msgstr ""
 
@@ -1433,10 +1435,6 @@ msgstr "Erreur NVS"
 #: shared-bindings/socketpool/SocketPool.c
 msgid "Name or service not known"
 msgstr "Nom ou service inconnu"
-
-#: py/qstr.c
-msgid "Name too long"
-msgstr "Nom trop long"
 
 #: shared-bindings/displayio/TileGrid.c
 msgid "New bitmap must be same size as old bitmap"
@@ -3620,6 +3618,10 @@ msgstr "nom '%q' non défini"
 msgid "name not defined"
 msgstr "nom non défini"
 
+#: py/qstr.c
+msgid "name too long"
+msgstr ""
+
 #: py/persistentcode.c
 msgid "native code in .mpy unsupported"
 msgstr "code natif dans fichier .mpy non pris en charge"
@@ -4460,6 +4462,9 @@ msgstr "zi doit être de type float"
 #: extmod/ulab/code/scipy/signal/signal.c
 msgid "zi must be of shape (n_section, 2)"
 msgstr "zi doit être de forme (n_section, 2)"
+
+#~ msgid "Name too long"
+#~ msgstr "Nom trop long"
 
 #~ msgid "Update Failed"
 #~ msgstr "Mise-à-jour échouée"

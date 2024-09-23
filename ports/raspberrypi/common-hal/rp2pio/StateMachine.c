@@ -1088,6 +1088,20 @@ int common_hal_rp2pio_statemachine_get_pending(rp2pio_statemachine_obj_t *self) 
     return self->pending_buffers;
 }
 
+int common_hal_rp2pio_statemachine_get_offset(rp2pio_statemachine_obj_t *self) {
+    uint8_t pio_index = pio_get_index(self->pio);
+    uint8_t sm = self->state_machine;
+    uint8_t offset = _current_program_offset[pio_index][sm];
+    return offset;
+}
+
+int common_hal_rp2pio_statemachine_get_pc(rp2pio_statemachine_obj_t *self) {
+    uint8_t pio_index = pio_get_index(self->pio);
+    PIO pio = pio_instances[pio_index];
+    uint8_t sm = self->state_machine;
+    return pio_sm_get_pc(pio, sm);
+}
+
 // Use a compile-time constant for MP_REGISTER_POINTER so the preprocessor will
 // not split the expansion across multiple lines.
 MP_REGISTER_ROOT_POINTER(mp_obj_t background_pio[enum_NUM_DMA_CHANNELS]);

@@ -1207,10 +1207,12 @@ msgstr ""
 #: ports/raspberrypi/common-hal/picodvi/Framebuffer_RP2040.c py/argcheck.c
 #: shared-bindings/digitalio/DigitalInOut.c
 #: shared-bindings/epaperdisplay/EPaperDisplay.c shared-bindings/pwmio/PWMOut.c
+#: shared-module/aurora_epaper/aurora_framebuffer.c
 msgid "Invalid %q"
 msgstr "Geçersiz %q"
 
 #: ports/raspberrypi/common-hal/picodvi/Framebuffer_RP2350.c
+#: shared-module/aurora_epaper/aurora_framebuffer.c
 msgid "Invalid %q and %q"
 msgstr ""
 
@@ -1398,10 +1400,6 @@ msgstr "NVS hatası"
 #: shared-bindings/socketpool/SocketPool.c
 msgid "Name or service not known"
 msgstr ""
-
-#: py/qstr.c
-msgid "Name too long"
-msgstr "İsim çok uzun"
 
 #: shared-bindings/displayio/TileGrid.c
 msgid "New bitmap must be same size as old bitmap"
@@ -3539,6 +3537,10 @@ msgstr ""
 msgid "name not defined"
 msgstr ""
 
+#: py/qstr.c
+msgid "name too long"
+msgstr ""
+
 #: py/persistentcode.c
 msgid "native code in .mpy unsupported"
 msgstr ""
@@ -4375,6 +4377,9 @@ msgstr ""
 #: extmod/ulab/code/scipy/signal/signal.c
 msgid "zi must be of shape (n_section, 2)"
 msgstr ""
+
+#~ msgid "Name too long"
+#~ msgstr "İsim çok uzun"
 
 #~ msgid "Error: Failure to bind"
 #~ msgstr "Hata: Bağlanamadı"

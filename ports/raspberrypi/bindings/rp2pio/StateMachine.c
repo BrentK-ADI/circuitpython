@@ -813,6 +813,35 @@ MP_DEFINE_CONST_FUN_OBJ_1(rp2pio_statemachine_get_in_waiting_obj, rp2pio_statema
 MP_PROPERTY_GETTER(rp2pio_statemachine_in_waiting_obj,
     (mp_obj_t)&rp2pio_statemachine_get_in_waiting_obj);
 
+//|     offset: int
+//|     """The instruction offset where the program was actually loaded"""
+//|
+
+static mp_obj_t rp2pio_statemachine_obj_get_offset(mp_obj_t self_in) {
+    rp2pio_statemachine_obj_t *self = MP_OBJ_TO_PTR(self_in);
+    check_for_deinit(self);
+    return MP_OBJ_NEW_SMALL_INT(common_hal_rp2pio_statemachine_get_offset(self));
+}
+MP_DEFINE_CONST_FUN_OBJ_1(rp2pio_statemachine_get_offset_obj, rp2pio_statemachine_obj_get_offset);
+
+MP_PROPERTY_GETTER(rp2pio_statemachine_offset_obj,
+    (mp_obj_t)&rp2pio_statemachine_get_offset_obj);
+
+//|     pc: int
+//|     """The current program counter of the state machine"""
+//|
+
+static mp_obj_t rp2pio_statemachine_obj_get_pc(mp_obj_t self_in) {
+    rp2pio_statemachine_obj_t *self = MP_OBJ_TO_PTR(self_in);
+    check_for_deinit(self);
+    return MP_OBJ_NEW_SMALL_INT(common_hal_rp2pio_statemachine_get_pc(self));
+}
+MP_DEFINE_CONST_FUN_OBJ_1(rp2pio_statemachine_get_pc_obj, rp2pio_statemachine_obj_get_pc);
+
+MP_PROPERTY_GETTER(rp2pio_statemachine_pc_obj,
+    (mp_obj_t)&rp2pio_statemachine_get_pc_obj);
+
+
 static const mp_rom_map_elem_t rp2pio_statemachine_locals_dict_table[] = {
     { MP_ROM_QSTR(MP_QSTR_deinit), MP_ROM_PTR(&rp2pio_statemachine_deinit_obj) },
     { MP_ROM_QSTR(MP_QSTR___enter__), MP_ROM_PTR(&default___enter___obj) },
@@ -836,6 +865,9 @@ static const mp_rom_map_elem_t rp2pio_statemachine_locals_dict_table[] = {
     { MP_ROM_QSTR(MP_QSTR_rxstall), MP_ROM_PTR(&rp2pio_statemachine_rxstall_obj) },
     { MP_ROM_QSTR(MP_QSTR_txstall), MP_ROM_PTR(&rp2pio_statemachine_txstall_obj) },
     { MP_ROM_QSTR(MP_QSTR_in_waiting), MP_ROM_PTR(&rp2pio_statemachine_in_waiting_obj) },
+
+    { MP_ROM_QSTR(MP_QSTR_offset), MP_ROM_PTR(&rp2pio_statemachine_offset_obj) },
+    { MP_ROM_QSTR(MP_QSTR_pc), MP_ROM_PTR(&rp2pio_statemachine_pc_obj) },
 };
 static MP_DEFINE_CONST_DICT(rp2pio_statemachine_locals_dict, rp2pio_statemachine_locals_dict_table);
 

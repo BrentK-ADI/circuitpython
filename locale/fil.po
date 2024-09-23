@@ -1197,10 +1197,12 @@ msgstr ""
 #: ports/raspberrypi/common-hal/picodvi/Framebuffer_RP2040.c py/argcheck.c
 #: shared-bindings/digitalio/DigitalInOut.c
 #: shared-bindings/epaperdisplay/EPaperDisplay.c shared-bindings/pwmio/PWMOut.c
+#: shared-module/aurora_epaper/aurora_framebuffer.c
 msgid "Invalid %q"
 msgstr ""
 
 #: ports/raspberrypi/common-hal/picodvi/Framebuffer_RP2350.c
+#: shared-module/aurora_epaper/aurora_framebuffer.c
 msgid "Invalid %q and %q"
 msgstr ""
 
@@ -1386,10 +1388,6 @@ msgstr ""
 
 #: shared-bindings/socketpool/SocketPool.c
 msgid "Name or service not known"
-msgstr ""
-
-#: py/qstr.c
-msgid "Name too long"
 msgstr ""
 
 #: shared-bindings/displayio/TileGrid.c
@@ -3542,6 +3540,10 @@ msgstr "name '%q' ay hindi defined"
 #: py/runtime.c
 msgid "name not defined"
 msgstr "name hindi na define"
+
+#: py/qstr.c
+msgid "name too long"
+msgstr ""
 
 #: py/persistentcode.c
 msgid "native code in .mpy unsupported"
