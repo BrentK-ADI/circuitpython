@@ -1179,6 +1179,7 @@ msgstr ""
 msgid "Interrupted by output function"
 msgstr ""
 
+#: ports/espressif/common-hal/_bleio/Service.c
 #: ports/espressif/common-hal/espulp/ULP.c
 #: ports/espressif/common-hal/microcontroller/Processor.c
 #: ports/mimxrt10xx/common-hal/audiobusio/__init__.c
@@ -1303,6 +1304,7 @@ msgid "MAC address was invalid"
 msgstr ""
 
 #: ports/espressif/common-hal/_bleio/Characteristic.c
+#: ports/espressif/common-hal/_bleio/Descriptor.c
 msgid "MITM security not supported"
 msgstr ""
 
@@ -2238,14 +2240,12 @@ msgid "Update failed"
 msgstr ""
 
 #: ports/espressif/common-hal/_bleio/Characteristic.c
-#: ports/espressif/common-hal/_bleio/Descriptor.c
 #: ports/nordic/common-hal/_bleio/Characteristic.c
 #: ports/nordic/common-hal/_bleio/Descriptor.c
 msgid "Value length != required fixed length"
 msgstr ""
 
 #: ports/espressif/common-hal/_bleio/Characteristic.c
-#: ports/espressif/common-hal/_bleio/Descriptor.c
 #: ports/nordic/common-hal/_bleio/Characteristic.c
 #: ports/nordic/common-hal/_bleio/Descriptor.c
 msgid "Value length > max_length"
@@ -3090,7 +3090,8 @@ msgstr ""
 msgid "function missing required positional argument #%d"
 msgstr ""
 
-#: py/argcheck.c py/bc.c py/objnamedtuple.c shared-bindings/time/__init__.c
+#: py/argcheck.c py/bc.c py/objnamedtuple.c shared-bindings/_eve/__init__.c
+#: shared-bindings/time/__init__.c
 #, c-format
 msgid "function takes %d positional arguments but %d were given"
 msgstr ""
@@ -3242,7 +3243,7 @@ msgstr ""
 msgid "input must be a dense ndarray"
 msgstr ""
 
-#: extmod/ulab/code/user/user.c
+#: extmod/ulab/code/user/user.c shared-bindings/_eve/__init__.c
 msgid "input must be an ndarray"
 msgstr ""
 
